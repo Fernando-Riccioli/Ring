@@ -223,13 +223,7 @@ public class Ring {
 	}
 
 	public void eliminaContatto(int numeroTelefono) {
-		Contatto contatto = elencoContatti.get(numeroTelefono);
-		for (Integer key : elencoContatti.keySet()) {
-			contatto = elencoContatti.get(key);
-			if (contatto.getNumero() == numeroTelefono) {
-				elencoContatti.remove(key);
-			}
-		}
+		elencoContatti.remove(numeroTelefono);
 	}
 
 	public void modificaPianoContatto(int numeroTelefono) {
@@ -241,7 +235,6 @@ public class Ring {
 		Contatto contatto = elencoContatti.get(numeroTelefono);
 		try {
 			testo= input.readLine();
-
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -254,7 +247,8 @@ public class Ring {
 
 	public void visualizzaPianoResiduo(int numeroTelefono){
 		Contatto contatto = elencoContatti.get(numeroTelefono);
-		contatto.getCredito().pianoResiduo();
+		Credito credito = contatto.getCredito();
+		credito.pianoResiduo();
 	}
 
 	public void creaGruppoUtenti(){
@@ -267,7 +261,6 @@ public class Ring {
 		BufferedReader input0 = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			nomeGruppo= input0.readLine();
-
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -278,7 +271,6 @@ public class Ring {
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			numUtenti= Integer.parseInt(input.readLine());
-
 		} catch (Exception e) {
 			System.out.println(e);
 		}

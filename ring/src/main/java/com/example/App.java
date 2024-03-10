@@ -52,7 +52,7 @@ public class App {
 
 		//elimina contatto
 		//System.out.println("Elimina contatto");
-		//ring.eliminaContatto(1803045);
+		ring.eliminaContatto(1803045);
 
 		System.out.println(c1);
 		
