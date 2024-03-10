@@ -102,6 +102,15 @@ public class Ring {
 	public void avviaChiamata(int numeroMittente, int numeroDestinatario) {
 		Contatto mittente = elencoContatti.get(numeroMittente);
 		Contatto destinatario = elencoContatti.get(numeroDestinatario);
+
+		//Controllo che l'utente abbia credito sufficiente
+		long minutiMittente = mittente.getCredito().getMinuti();
+		if(minutiMittente == 0)
+		{
+			System.out.println("Credito insufficiente.");
+			return;
+		}
+
 		chiamataCorrente = new Chiamata(mittente, destinatario);
 	}
 
@@ -122,6 +131,15 @@ public class Ring {
 	public void inviaMessaggio(int numeroMittente, int numeroDestinatario) {
 		Contatto mittente = elencoContatti.get(numeroMittente);
 		Contatto destinatario = elencoContatti.get(numeroDestinatario);
+
+		//Controllo che l'utente abbia credito sufficiente
+		int messaggiCredito = mittente.getCredito().getNumeroMessaggi();
+		if(messaggiCredito == 0)
+		{
+			System.out.println("Credito insufficiente.");
+			return;
+		}
+
 		messaggioCorrente = new Messaggio(mittente, destinatario);
 		messaggioCorrente.scriviTesto();
 	}
@@ -244,7 +262,7 @@ public class Ring {
 		int numTelefono=0;
 		String nomeGruppo=null;
 
-		//Ottengo il nome gruppo da tastiera
+		//Ottengo il nome del gruppo da tastiera
 		System.out.println("Inserire il nome del gruppo");
 		BufferedReader input0 = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -265,15 +283,20 @@ public class Ring {
 			System.out.println(e);
 		}
 
-		//Per ogni utente inserisco il numero di telefono
+		//Inserisco gli utenti del gruppo tramite il numero di telefono
 		for(int i=0;i<numUtenti;i++){
 			System.out.println("Inserire il numero di telefono utente");
 			BufferedReader input1 = new BufferedReader(new InputStreamReader(System.in));
 			try {
 				numTelefono=Integer.parseInt(input1.readLine());
 				Contatto contatto = elencoContatti.get(numTelefono);
+				//Se il numero di telefono non è presente nel database
+				if(contatto == null){
+					System.out.println("Nessun contatto con quel numero di telefono.");
+					System.out.println("Operazione annullata.");
+					return;
+				}
 				gruppoContatti.add(contatto);
-
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -313,6 +336,8 @@ public class Ring {
 		Credito creditoMittente = mittente.getCredito();
 		context.setStrategy(new StrategyMessaggi());
 		Credito nuovoCredito = context.aggiornaCredito(0, creditoMittente);
+		//Il messaggio broadcast costa il doppio
+		nuovoCredito = context.aggiornaCredito(0, nuovoCredito);
 		mittente.setCredito(nuovoCredito);
 		
 		//Aggiungo il messaggio alla lista Messaggi Broadcast

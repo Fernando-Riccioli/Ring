@@ -19,7 +19,6 @@ public class StrategyChiamate implements Strategy{
         } 
         System.out.println("Minuti (secondi) rimanenti: "+ minuti);
         credito.setMinuti(minuti);
-        //Credito insufficiente
         return credito;
     }
 }

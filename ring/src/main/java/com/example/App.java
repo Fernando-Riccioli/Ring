@@ -19,6 +19,8 @@ public class App {
 		System.out.println(c1.getRuolo());
 		System.out.println(c2.getRuolo());
 
+		// c1.setCredito(new Credito(0, 0));
+
 		//Test chiamata
 		ring.avviaChiamata(1803045, 6708530);
 		try{
@@ -28,6 +30,8 @@ public class App {
 		}
 		ring.chiudiChiamata();
 		System.out.println(ring.getElencoChiamate());
+
+		// c1.setCredito(new Credito(0, 0));
 
 		//test messaggio
 		ring.inviaMessaggio(1803045, 6708530);
