@@ -333,13 +333,14 @@ public class Ring {
 		mittente.setCredito(nuovoCredito);
 		
 		//Aggiungo il messaggio alla lista Messaggi Broadcast
-		messaggioCorrente.setDestinatario(null);
+		// messaggioCorrente.setDestinatario(null);
 		elencoMessaggiBroadcast.put(nomeGruppo, messaggioCorrente);
 	}
 
 	public void visualizzaMessaggiBroadcast(String nomeGruppo){
 		//Visualizza l'ultimo messaggio broadcast di un gruppo
 		Messaggio messaggio = elencoMessaggiBroadcast.get(nomeGruppo);
-		System.out.println(messaggio);
+		System.out.println("Messaggio da " + messaggio.getMittente().getNome() +
+		" al gruppo " + nomeGruppo + " con testo: " + messaggio.getTesto());
 	}
 }

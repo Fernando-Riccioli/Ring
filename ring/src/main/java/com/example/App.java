@@ -66,5 +66,8 @@ public class App {
 
 		//Invia messaggio broadcast
 		ring.inviaMessaggioBroadcast(1803045, "colleghi");
+
+		//visualizza messaggi broadcast
+		ring.visualizzaMessaggiBroadcast("colleghi");
 	}
 }
