@@ -25,14 +25,6 @@ public class MessaggioTest {
         messaggio.setDestinatario(null);
     }
 
-    /* System.in
-    @Test
-    public void testMessaggio(){
-        messaggio.scriviTesto();
-        assertNotNull(messaggio.getTesto());
-    }
-    */
-
     @Test
     public void testMessaggioBroadcast(){
         messaggio.scriviTestoBroadcast("Messaggio broadcast.");

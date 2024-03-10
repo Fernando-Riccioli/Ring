@@ -22,8 +22,7 @@ public class Chiamata {
     public void chiusura(){
         durata = (System.currentTimeMillis() - durata) / 1000;
         System.out.println("Chiamata terminata, durata: " + durata + " secondi.");
-        Credito credito = mittente.getCredito();
-        credito.aggiornaCredito(durata);
+        //cambia astah (rimosso credito qua, livello superiore)
         }
     
     public long getDurata(){

@@ -38,10 +38,6 @@ public class Messaggio {
         this.testo = testo;
     }
 
-    public void aggiornaCredito(){
-        mittente.aggiornaCredito();
-    }
-
     public void setMittente(Contatto mittente){
         this.mittente = mittente;
     }

@@ -31,6 +31,7 @@ public class CreditoTest {
         credito = null;
     }
 
+    /* 
     @Test
     public void testAggiornaCreditoMessaggi(){
         credito.aggiornaCredito(50);
@@ -49,4 +50,5 @@ public class CreditoTest {
         if (!isWeekend)
             assertEquals(499, credito.getNumeroMessaggi());
     }
+    */
 }

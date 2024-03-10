@@ -23,15 +23,20 @@ public class Ring {
 
 	private Map<String,List<Contatto>> listaGruppi;
 
+	//Strategy
+	Context context = new Context();
+
 	//Singleton
 	private Ring() {
 		this.listaGruppi = new HashMap<>();
 		this.elencoContatti = new HashMap<>();
 		this.ruoli = new HashMap<>();
-		loadRuoli();
+		this.elencoMessaggiBroadcast = new HashMap<>();
+
 		this.elencoChiamate = new ArrayList<>();
 		this.elencoMessaggi = new ArrayList<>();
-		this.elencoMessaggiBroadcast = new HashMap<>();
+
+		loadRuoli();
 	}
 
 	public static Ring getInstance() {
@@ -101,7 +106,16 @@ public class Ring {
 	}
 
 	public void chiudiChiamata() {
+		//Chiudo la chiamata
 		chiamataCorrente.chiusura();
+
+		//Aggiorno il credito tramite strategy
+		Contatto mittente = chiamataCorrente.getMittente();
+		Credito credito = mittente.getCredito();
+		long durata = chiamataCorrente.getDurata();
+		context.setStrategy(new StrategyChiamate());
+		Credito nuovoCredito = context.aggiornaCredito(durata, credito);
+		mittente.setCredito(nuovoCredito);
 		elencoChiamate.add(chiamataCorrente);
 	}
 
@@ -112,8 +126,16 @@ public class Ring {
 		messaggioCorrente.scriviTesto();
 	}
 
+	//Messaggio
 	public void aggiornaCredito() {
-		messaggioCorrente.aggiornaCredito();
+		//Aggiorno il credito tramite Strategy
+		Contatto mittente = messaggioCorrente.getMittente();
+		Credito credito = mittente.getCredito();
+		context.setStrategy(new StrategyMessaggi());
+		Credito nuovoCredito = context.aggiornaCredito(0, credito);
+		mittente.setCredito(nuovoCredito);
+
+		//Aggiungo il messaggio alla lista messaggi
 		elencoMessaggi.add(messaggioCorrente);
 	}
 
@@ -143,6 +165,7 @@ public class Ring {
 		String scelta = null;
 		String nuovoValore = null;
 		Contatto contatto = elencoContatti.get(numeroTelefono);
+
 		//Ottengo il parametro da modificare da tastiera
 		System.out.println("Cosa vuoi modificare del contatto " + contatto.getNome() + "?");
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -152,6 +175,8 @@ public class Ring {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
+		//Ottengo il nuovo valore da tastiera
 		System.out.println("Inserisci il nuovo valore:");
 		try {
 			nuovoValore = input.readLine();
@@ -159,6 +184,7 @@ public class Ring {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
 		//Switch in base al parametro da modificare
 		switch (scelta) {
 			case "nome":
@@ -180,7 +206,6 @@ public class Ring {
 
 	public void eliminaContatto(int numeroTelefono) {
 		Contatto contatto = elencoContatti.get(numeroTelefono);
-		contatto.annullaPiano();
 		for (Integer key : elencoContatti.keySet()) {
 			contatto = elencoContatti.get(key);
 			if (contatto.getNumero() == numeroTelefono) {
@@ -191,6 +216,7 @@ public class Ring {
 
 	public void modificaPianoContatto(int numeroTelefono) {
 		String testo=null;
+
 		//Ottengo il nuovo ruolo da tastiera
 		System.out.println("Inserire il nuovo ruolo");
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -201,7 +227,8 @@ public class Ring {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		//Aggiorno il ruolo del contatto tramite i ruoli presenti nella lista
+
+		//Aggiorno il ruolo del contatto
 		RuoloAziendale ruolo = ruoli.get(testo);
 		contatto.setRuolo(ruolo);
 		contatto.nuovoCredito();
@@ -216,6 +243,7 @@ public class Ring {
 		int numUtenti=0;
 		int numTelefono=0;
 		String nomeGruppo=null;
+
 		//Ottengo il nome gruppo da tastiera
 		System.out.println("Inserire il nome del gruppo");
 		BufferedReader input0 = new BufferedReader(new InputStreamReader(System.in));
@@ -226,6 +254,7 @@ public class Ring {
 			System.out.println(e);
 		}
 		List<Contatto> gruppoContatti = new ArrayList<>();
+
 		//Ottengo il numero di utenti del gruppo da tastiera
 		System.out.println("Inserire il numero di utenti del gruppo");
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -235,6 +264,7 @@ public class Ring {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
 		//Per ogni utente inserisco il numero di telefono
 		for(int i=0;i<numUtenti;i++){
 			System.out.println("Inserire il numero di telefono utente");
@@ -248,34 +278,45 @@ public class Ring {
 				System.out.println(e);
 			}
 		}
+
 		//Inserisco il gruppo nella lista dei gruppi
 		this.listaGruppi.put(nomeGruppo,gruppoContatti);
 	}
 
 	public void inviaMessaggioBroadcast(int numeroMittente, String nomeGruppo){
+
+		//Prendo il gruppo contatti dalla lista
 		Contatto mittente = elencoContatti.get(numeroMittente);
-		//Controllo
 		List<Contatto> gruppoContatti = new ArrayList<>();
 		gruppoContatti = listaGruppi.get(nomeGruppo);
+
 		//Prendo il messaggio da tastiera
 		Scanner scanner = new Scanner(System.in);
         System.out.println("Inserisci un messaggio di massimo 144 caratteri:");
         String input = scanner.nextLine();
+
 		//Controllo la lunghezza del messaggio
         if (input.length() > 144) {
             System.out.println("Il testo supera i 144 caratteri.");
             input = input.substring(0, 144);
         }
         scanner.close();
+
 		//Per ogni contatto invio un messaggio singolo
 		for(int i=0;i<gruppoContatti.size();i++){
 			Contatto destinatario = gruppoContatti.get(i);
 			messaggioCorrente = new Messaggio(mittente, destinatario);
 			messaggioCorrente.scriviTestoBroadcast(input);
 		}
-		messaggioCorrente.aggiornaCredito();
+
+		//Aggiorno il credito tramite Strategy
+		Credito creditoMittente = mittente.getCredito();
+		context.setStrategy(new StrategyMessaggi());
+		Credito nuovoCredito = context.aggiornaCredito(0, creditoMittente);
+		mittente.setCredito(nuovoCredito);
+		
+		//Aggiungo il messaggio alla lista Messaggi Broadcast
 		messaggioCorrente.setDestinatario(null);
-		nomeGruppo = nomeGruppo + 
 		elencoMessaggiBroadcast.put(nomeGruppo, messaggioCorrente);
 	}
 

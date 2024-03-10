@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.Date;
-
 public class Credito {
 
 	private long minuti;
@@ -12,38 +10,20 @@ public class Credito {
         this.numeroMessaggi = numeroMessaggi;
     }
 
+    public void setMinuti(long minuti){
+        this.minuti = minuti;
+    }
+
     public long getMinuti() {
 		return minuti;
 	}
 
+    public void setNumeroMessaggi(int numeroMessaggi){
+        this.numeroMessaggi = numeroMessaggi;
+    }
+
     public int getNumeroMessaggi(){
         return numeroMessaggi;
-    }
-
-    public void aggiornaCredito(long durata){
-        this.minuti -= durata;
-        Date dataCorrente = new Date();
-        @SuppressWarnings("deprecation")
-        int giornoSettimana = dataCorrente.getDay();
-        // Se il giorno è sabato (6) o domenica (0) uso il doppio del credito
-        if (giornoSettimana == 6 || giornoSettimana == 0) {
-            System.out.println("È sabato o domenica");
-            this.minuti -= durata;
-        } 
-        System.out.println("Minuti (secondi) rimanenti: "+ minuti);
-    }
-
-    public void aggiornaCredito(){
-        numeroMessaggi--;
-        Date dataCorrente = new Date();
-        @SuppressWarnings("deprecation")
-        int giornoSettimana = dataCorrente.getDay();
-        // Se il giorno è sabato (6) o domenica (0) uso il doppio del credito
-        if (giornoSettimana == 6 || giornoSettimana == 0) {
-            System.out.println("È sabato o domenica");
-            numeroMessaggi--;
-        } 
-        System.out.println("Messaggi rimanenti: "+ numeroMessaggi);
     }
 
     public void addCredit(long minuti, int messaggi ){
