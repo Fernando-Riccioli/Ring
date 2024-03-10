@@ -102,6 +102,15 @@ public class Ring {
 	public void avviaChiamata(int numeroMittente, int numeroDestinatario) {
 		Contatto mittente = elencoContatti.get(numeroMittente);
 		Contatto destinatario = elencoContatti.get(numeroDestinatario);
+
+		//Controllo che l'utente abbia credito sufficiente
+		long minutiMittente = mittente.getCredito().getMinuti();
+		if(minutiMittente == 0)
+		{
+			System.out.println("Credito insufficiente.");
+			return;
+		}
+
 		chiamataCorrente = new Chiamata(mittente, destinatario);
 	}
 
@@ -122,6 +131,15 @@ public class Ring {
 	public void inviaMessaggio(int numeroMittente, int numeroDestinatario) {
 		Contatto mittente = elencoContatti.get(numeroMittente);
 		Contatto destinatario = elencoContatti.get(numeroDestinatario);
+
+		//Controllo che l'utente abbia credito sufficiente
+		int messaggiCredito = mittente.getCredito().getNumeroMessaggi();
+		if(messaggiCredito == 0)
+		{
+			System.out.println("Credito insufficiente.");
+			return;
+		}
+
 		messaggioCorrente = new Messaggio(mittente, destinatario);
 		messaggioCorrente.scriviTesto();
 	}
@@ -272,8 +290,13 @@ public class Ring {
 			try {
 				numTelefono=Integer.parseInt(input1.readLine());
 				Contatto contatto = elencoContatti.get(numTelefono);
+				//Se il numero di telefono non è presente nel database
+				if(contatto == null){
+					System.out.println("Nessun contatto con quel numero di telefono.");
+					System.out.println("Operazione annullata.");
+					return;
+				}
 				gruppoContatti.add(contatto);
-
 			} catch (Exception e) {
 				System.out.println(e);
 			}
