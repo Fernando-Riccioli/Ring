@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,13 +14,8 @@ public class RingTest {
 
     @Before
     public void avvio(){
-         ring = Ring.getInstance();
-         junior = new RuoloAziendale("Junior");
-    }
-
-    @After
-    public void clear(){
-        
+        ring = Ring.getInstance();
+        junior = new RuoloAziendale("Junior");
     }
 
     @Test
