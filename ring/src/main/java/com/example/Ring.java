@@ -244,7 +244,7 @@ public class Ring {
 		int numTelefono=0;
 		String nomeGruppo=null;
 
-		//Ottengo il nome gruppo da tastiera
+		//Ottengo il nome del gruppo da tastiera
 		System.out.println("Inserire il nome del gruppo");
 		BufferedReader input0 = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -265,7 +265,7 @@ public class Ring {
 			System.out.println(e);
 		}
 
-		//Per ogni utente inserisco il numero di telefono
+		//Inserisco gli utenti del gruppo tramite il numero di telefono
 		for(int i=0;i<numUtenti;i++){
 			System.out.println("Inserire il numero di telefono utente");
 			BufferedReader input1 = new BufferedReader(new InputStreamReader(System.in));
@@ -313,6 +313,8 @@ public class Ring {
 		Credito creditoMittente = mittente.getCredito();
 		context.setStrategy(new StrategyMessaggi());
 		Credito nuovoCredito = context.aggiornaCredito(0, creditoMittente);
+		//Il messaggio broadcast costa il doppio
+		nuovoCredito = context.aggiornaCredito(0, nuovoCredito);
 		mittente.setCredito(nuovoCredito);
 		
 		//Aggiungo il messaggio alla lista Messaggi Broadcast
