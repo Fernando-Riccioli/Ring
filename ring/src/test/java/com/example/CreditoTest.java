@@ -1,12 +1,9 @@
 package com.example;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 public class CreditoTest {
 
