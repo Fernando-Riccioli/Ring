@@ -32,15 +32,6 @@ public class Contatto {
 
 	public void inizializzaCredito(){}
 
-	public void aggiornaCredito(){
-		credito.aggiornaCredito();
-	}
-
-	public void annullaPiano(){
-		this.credito=null;
-	}
-
-
 	public void setNumero(int numero) {
 		this.numeroTelefono = numero;
 	}
